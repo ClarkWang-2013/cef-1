@@ -226,6 +226,30 @@ def GetRecommendedDefaultArgs():
     # TODO(cef): Remove this flag once we require a newer host system.
     result['fatal_linker_warnings'] = False
 
+    # Args for loongson
+    result['clang_use_chrome_plugins'] = False
+    result['enable_hangout_services_extension'] = True
+    result['enable_nacl_nonsfi'] = False
+    result['enable_swiftshader'] = False
+    #result['enable_widevine'] = False
+    result['fatal_linker_warnings'] = False
+    result['ffmpeg_branding'] = "Chrome"
+    result['fieldtrial_testing_like_official_build'] = False
+    result['is_clang'] = False
+    result['link_pulseaudio'] = True
+    result['linux_use_bundled_binutils'] = False
+    result['proprietary_codecs'] = True
+    result['symbol_level'] = 0
+    result['treat_warnings_as_errors'] = False
+    result['use_allocator'] = "tcmalloc"
+    result['use_cups'] = True
+    result['use_gnome_keyring'] = False
+    result['use_gold'] = False
+    result['use_kerberos'] = True
+    result['use_pulseaudio'] = True
+    result['mips_arch_variant'] = "loongson3"
+    result['mips_use_mmi'] = True
+
   return result
 
 
