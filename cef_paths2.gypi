@@ -97,6 +97,7 @@
       'include/base/internal/cef_atomicops_arm_gcc.h',
       'include/base/internal/cef_atomicops_arm64_gcc.h',
       'include/base/internal/cef_atomicops_x86_gcc.h',
+      'include/base/internal/cef_atomicops_mips_gcc.h',
       'include/internal/cef_linux.h',
     ],
     'includes_linux_capi': [
