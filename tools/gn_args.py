@@ -164,13 +164,13 @@ def GetChromiumDefaultArgs():
   defaults = {
       'dcheck_always_on': False,
       'is_asan': False,
-      'is_debug': True,
-      'is_official_build': False,
-      'target_cpu': 'x64',
+      'is_debug': False,
+      'is_official_build': True,
+      'target_cpu': 'mips64el',
   }
 
   if platform == 'linux':
-    defaults['use_sysroot'] = True
+    defaults['use_sysroot'] = False
 
   if platform == 'windows':
     defaults['is_win_fastlink'] = False
@@ -319,8 +319,8 @@ def ValidateArgs(args):
         'x86', 'x64', 'arm64'), 'target_cpu must be "x86", "x64" or "arm64"'
   elif platform == 'linux':
     assert target_cpu in (
-        'x86', 'x64', 'arm',
-        'arm64'), 'target_cpu must be "x86", "x64", "arm" or "arm64"'
+        'x86', 'x64', 'arm', 'mips64el',
+        'arm64'), 'target_cpu must be "x86", "x64", "arm" , "mips64el" or "arm64"'
 
   if platform == 'linux':
     if target_cpu == 'x86':
@@ -444,7 +444,7 @@ def GetConfigArgsSandbox(platform, args, is_debug, cpu):
       'use_allocator_shim': False,
 
       # Avoid /LTCG linker warnings and generate smaller lib files.
-      'is_official_build': False,
+      'is_official_build': True,
 
       # Enable base target customizations necessary for distribution of the
       # cef_sandbox static library.
@@ -484,6 +484,8 @@ def LinuxSysrootExists(cpu):
     sysroot_name = 'debian_sid_arm-sysroot'
   elif cpu == 'arm64':
     sysroot_name = 'debian_sid_arm64-sysroot'
+  elif cpu == 'mips64el':
+    sysroot_name = 'debian_sid_mips64el-sysroot'
   else:
     raise Exception('Unrecognized sysroot CPU: %s' % cpu)
 
@@ -499,7 +501,7 @@ def GetAllPlatformConfigs(build_args):
   # Merged args without validation.
   args = GetMergedArgs(build_args)
 
-  create_debug = True
+  create_debug = False
 
   # Don't create debug directories for asan builds.
   if GetArgValue(args, 'is_asan'):
@@ -512,14 +514,14 @@ def GetAllPlatformConfigs(build_args):
     use_sysroot = GetArgValue(args, 'use_sysroot')
     if use_sysroot:
       # Only generate configurations for sysroots that have been installed.
-      for cpu in ('x86', 'x64', 'arm', 'arm64'):
+      for cpu in ('x86', 'x64', 'arm', 'arm64', 'mips64el'):
         if LinuxSysrootExists(cpu):
           supported_cpus.append(cpu)
         else:
           msg('Not generating %s configuration due to missing sysroot directory'
               % cpu)
     else:
-      supported_cpus = ['x64']
+      supported_cpus = ['mips64el']
   elif platform == 'windows':
     supported_cpus = ['x86', 'x64']
     if os.environ.get('CEF_ENABLE_ARM64', '') == '1':
