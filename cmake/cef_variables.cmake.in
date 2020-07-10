@@ -217,7 +217,7 @@ if(OS_LINUX)
     libGLESv2.so
     snapshot_blob.bin
     v8_context_snapshot.bin
-    swiftshader
+    #swiftshader
     )
 
   # List of CEF resource files.
@@ -479,7 +479,7 @@ if(OS_WINDOWS)
     libGLESv2.dll
     snapshot_blob.bin
     v8_context_snapshot.bin
-    swiftshader
+    #swiftshader
     )
 
   # List of CEF resource files.

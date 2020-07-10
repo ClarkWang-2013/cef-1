@@ -502,6 +502,12 @@ parser.add_option(
     default=False,
     help='create an ARM64 binary distribution (Linux only)')
 parser.add_option(
+    '--mips64el-build',
+    action='store_true',
+    dest='mips64elbuild',
+    default=False,
+    help='create an MIPS64 binary distribution (Linux only)')
+parser.add_option(
     '--minimal',
     action='store_true',
     dest='minimal',
@@ -564,6 +570,10 @@ if options.arm64build and not platform in ('linux', 'windows'):
   print_error('--arm64-build is only supported on Linux and Windows.')
   sys.exit()
 
+if options.mips64elbuild and not platform in ('linux', 'windows'):
+  print_error('--mips64el-build is only supported on Linux and Windows.')
+  sys.exit()
+
 if options.sandbox and not platform in ('macosx', 'windows'):
   print_error('--sandbox is only supported on macOS and Windows.')
   sys.exit()
@@ -619,6 +629,9 @@ elif options.armbuild:
 elif options.arm64build:
   platform_arch = 'arm64'
   binary_arch = 'arm64'
+elif options.mips64elbuild:
+  platform_arch = 'mips64el'
+  binary_arch = 'mips64el'
 else:
   platform_arch = '32'
   binary_arch = 'x86'
@@ -670,6 +683,8 @@ elif options.armbuild:
   build_dir_suffix = '_GN_arm'
 elif options.arm64build:
   build_dir_suffix = '_GN_arm64'
+elif options.mips64elbuild:
+  build_dir_suffix = '_GN_mips64el'
 else:
   build_dir_suffix = '_GN_x86'
 
@@ -1159,8 +1174,8 @@ elif platform == 'linux':
       {'path': 'libGLESv2.so'},
       {'path': 'snapshot_blob.bin', 'conditional': True},
       {'path': 'v8_context_snapshot.bin', 'conditional': True},
-      {'path': 'swiftshader/libEGL.so'},
-      {'path': 'swiftshader/libGLESv2.so'},
+      #{'path': 'swiftshader/libEGL.so'},
+      #{'path': 'swiftshader/libGLESv2.so'},
   ]
   # yapf: enable
   if options.ozone:
